@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kongxiaogang.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.kongxiaogang.model.UserModel" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="INTEGER" />
+    <result column="user_telephone" property="userTelephone" jdbcType="VARCHAR" />
+    <result column="login_number" property="loginNumber" jdbcType="INTEGER" />
+    <result column="user_salt" property="userSalt" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="userMap" type="com.kongxiaogang.model.UserModel">
+	<id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="INTEGER" />
+    <result column="user_telephone" property="userTelephone" jdbcType="VARCHAR" />
+    <result column="login_number" property="loginNumber" jdbcType="INTEGER" />
+    <result column="user_salt" property="userSalt" jdbcType="VARCHAR" />
+	<association property="role" column="role_id" javaType="com.kongxiaogang.model.RoleModel">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+    	<result column="role_key" property="roleKey" jdbcType="VARCHAR" />
+    	<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    	<result column="role_des" property="roleDes" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_name, real_name, user_pwd, user_email, user_status, user_telephone, 
+    login_number, user_salt
+  </sql>
+  <select id="getUserByUserID" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT
+	<include refid="Base_Column_List" />
+	FROM sys_user
+	WHERE user_name=#{userID,jdbcType=VARCHAR}
+  </select>
+  <select id="getUserByUserEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT
+	<include refid="Base_Column_List" />
+	FROM sys_user
+	WHERE user_email=#{email,jdbcType=VARCHAR}
+  </select>
+  <select id="getUserByUserTel" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT
+	<include refid="Base_Column_List" />
+	FROM sys_user
+	WHERE user_telephone=#{userTel,jdbcType=VARCHAR}
+  </select>
+  <select id="getUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT
+	<include refid="Base_Column_List" />
+	FROM sys_user
+	WHERE user_name=#{userName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="userMap">
+	SELECT
+		u.user_id, u.user_name, u.real_name, u.user_pwd, u.user_email, u.user_status, u.user_telephone, 
+    	u.login_number, u.user_salt,r.role_id,r.role_key,r.role_name,r.role_des
+	FROM sys_user u
+	left join sys_user_role ur on u.user_id = ur.user_id
+	left join sys_role r on ur.role_id = r.role_id
+	WHERE u.user_name=#{userName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.kongxiaogang.model.UserModel" >
+    insert into sys_user (user_id, user_name, real_name, 
+      user_pwd, user_email, user_status, 
+      user_telephone, login_number, user_salt
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{userPwd,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER}, 
+      #{userTelephone,jdbcType=VARCHAR}, #{loginNumber,jdbcType=INTEGER}, #{userSalt,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kongxiaogang.model.UserModel" >
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="userPwd != null" >
+        user_pwd,
+      </if>
+      <if test="userEmail != null" >
+        user_email,
+      </if>
+      <if test="userStatus != null" >
+        user_status,
+      </if>
+      <if test="userTelephone != null" >
+        user_telephone,
+      </if>
+      <if test="loginNumber != null" >
+        login_number,
+      </if>
+      <if test="userSalt != null" >
+        user_salt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userTelephone != null" >
+        #{userTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginNumber != null" >
+        #{loginNumber,jdbcType=INTEGER},
+      </if>
+      <if test="userSalt != null" >
+        #{userSalt,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kongxiaogang.model.UserModel" >
+    update sys_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userTelephone != null" >
+        user_telephone = #{userTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="loginNumber != null" >
+        login_number = #{loginNumber,jdbcType=INTEGER},
+      </if>
+      <if test="userSalt != null" >
+        user_salt = #{userSalt,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kongxiaogang.model.UserModel" >
+    update sys_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=INTEGER},
+      user_telephone = #{userTelephone,jdbcType=VARCHAR},
+      login_number = #{loginNumber,jdbcType=INTEGER},
+      user_salt = #{userSalt,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <select id="selectUserList" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT
+	u.user_id,u.user_name,u.user_pwd,u.user_email,u.user_status,u.user_telephone,u.login_number,u.user_salt,ur.role_id as role_id
+	FROM sys_user u left join sys_user_ROLE ur on u.user_id=ur.user_id where 1=1 
+	<if test="userId !=null">
+		and u.user_id=#{userId,jdbcType=INTEGER} 
+	</if>
+  </select>
+  <select id="selectUserAndRoleList"  parameterType="com.kongxiaogang.model.UserModel" resultType="java.util.Map">
+   	select 
+   	u.user_id as userId,
+   	u.user_name as userName,
+   	u.user_pwd as userPwd,
+   	u.user_email as userEmail,
+   	u.user_status as userStatus,
+   	u.user_telephone as userTelephone,
+   	u.login_number as loginNumber,
+   	u.user_salt as userSalt,
+   	ur.role_id as roleId,
+   	r.role_name as roleName
+   	FROM sys_user u 
+   	left join sys_user_ROLE ur on u.user_id=ur.user_id
+   	left join sys_role r on ur.role_id=r.role_id
+   	where 1=1
+   	<if test="userId !=null">
+		and u.userId=#{userId,jdbcType=INTEGER} 
+	</if>
+  </select>
+  <select id="selectUserAndRoleAndPerList"  parameterType="com.kongxiaogang.model.UserModel" resultType="java.util.Map">
+   	select 
+	   	u.user_id as userId,
+	   	u.user_name as userName,
+	   	u.user_pwd as userPwd,
+	   	u.user_email as userEmail,
+	   	rp.role_id as roleId,
+	   	r.role_name as roleName,
+	   	p.per_id as perId,
+	   	m.menu_id as menuId,
+	   	m.menu_name as menuName,
+	   	m.page_url as pageUrl,
+	   	m.parent_id as parentId,
+	   	m.level as level,
+	   	m.order_number as orderNumber
+   	FROM sys_user u 
+   	left join sys_user_ROLE ur on u.user_id=ur.user_id
+   	left join sys_role r on ur.role_id=r.role_id
+   	left join sys_role_per rp on r.role_id=rp.role_id
+   	left join sys_permission p on p.per_id=rp.per_id
+   	left join sys_menu m on m.menu_id=p.menu_id
+   	where 1=1
+   	<if test="userId !=null">
+		and u.user_id=#{userId,jdbcType=INTEGER} 
+	</if>
+  </select>
+</mapper>

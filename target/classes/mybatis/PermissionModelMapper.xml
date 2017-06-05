@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kongxiaogang.dao.PermissionDao" >
+  <resultMap id="BaseResultMap" type="com.kongxiaogang.model.PermissionModel" >
+    <id column="per_id" property="perId" jdbcType="INTEGER" />
+    <result column="per_key" property="perKey" jdbcType="VARCHAR" />
+    <result column="per_name" property="perName" jdbcType="VARCHAR" />
+    <result column="per_type" property="perType" jdbcType="INTEGER" />
+    <result column="ope_id" property="opeId" jdbcType="INTEGER" />
+    <result column="menu_id" property="menuId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    per_id, per_key, per_name, per_type, ope_id, menu_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_permission
+    where per_id = #{perId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_permission
+    where per_id = #{perId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.kongxiaogang.model.PermissionModel" >
+    insert into sys_permission (per_id, per_key, per_name, 
+      per_type, ope_id, menu_id
+      )
+    values (#{perId,jdbcType=INTEGER}, #{perKey,jdbcType=VARCHAR}, #{perName,jdbcType=VARCHAR}, 
+      #{perType,jdbcType=INTEGER}, #{opeId,jdbcType=INTEGER}, #{menuId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kongxiaogang.model.PermissionModel" >
+    insert into sys_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="perId != null" >
+        per_id,
+      </if>
+      <if test="perKey != null" >
+        per_key,
+      </if>
+      <if test="perName != null" >
+        per_name,
+      </if>
+      <if test="perType != null" >
+        per_type,
+      </if>
+      <if test="opeId != null" >
+        ope_id,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="perId != null" >
+        #{perId,jdbcType=INTEGER},
+      </if>
+      <if test="perKey != null" >
+        #{perKey,jdbcType=VARCHAR},
+      </if>
+      <if test="perName != null" >
+        #{perName,jdbcType=VARCHAR},
+      </if>
+      <if test="perType != null" >
+        #{perType,jdbcType=INTEGER},
+      </if>
+      <if test="opeId != null" >
+        #{opeId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kongxiaogang.model.PermissionModel" >
+    update sys_permission
+    <set >
+      <if test="perKey != null" >
+        per_key = #{perKey,jdbcType=VARCHAR},
+      </if>
+      <if test="perName != null" >
+        per_name = #{perName,jdbcType=VARCHAR},
+      </if>
+      <if test="perType != null" >
+        per_type = #{perType,jdbcType=INTEGER},
+      </if>
+      <if test="opeId != null" >
+        ope_id = #{opeId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where per_id = #{perId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kongxiaogang.model.PermissionModel" >
+    update sys_permission
+    set per_key = #{perKey,jdbcType=VARCHAR},
+      per_name = #{perName,jdbcType=VARCHAR},
+      per_type = #{perType,jdbcType=INTEGER},
+      ope_id = #{opeId,jdbcType=INTEGER},
+      menu_id = #{menuId,jdbcType=INTEGER}
+    where per_id = #{perId,jdbcType=INTEGER}
+  </update>
+  <select id="selectPermissionList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	SELECT
+	<include refid="Base_Column_List" />
+	FROM sys_permission where 1=1 
+	<if test="perId !=null">
+		and per_id=#{perId,jdbcType=INTEGER} 
+	</if>
+  </select>
+  <select id="getLevelOnePermissionList" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT
+	p.per_id,p.per_name,p.per_type,p.ope_id,p.menu_id
+	FROM sys_permission p left join sys_menu m on p.menu_id=m.menu_id 
+	where m.parent_id = '1000000'
+  </select>
+  <select id="getChildsPermissionByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	SELECT
+	p.per_id,p.per_name,p.per_type,p.ope_id,p.menu_id
+	FROM sys_permission p left join sys_menu m on p.menu_id=m.menu_id 
+	where m.parent_id = #{opeId,jdbcType=INTEGER}
+  </select>
+  <select id="selectPermissionListByMap" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT
+	p.per_id as perId,p.per_name as perName,p.per_type as perType,p.ope_id as opeId,
+	p.menu_id as menuId,m.leaf_node as leafNode,
+	m.level as level,m.parent_id as parentId
+	FROM sys_permission p left join sys_menu m on p.menu_id=m.menu_id 
+	where 1=1
+	<if test="level != null and level != ''"  >
+       and m.level = #{level} 
+    </if>
+	order by m.order_number
+  </select>
+</mapper>

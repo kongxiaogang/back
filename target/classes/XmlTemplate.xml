@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--类型说明 中华网销车险接口文件-->
+<!--SimpleString : 简单字符串类型,无填充 -->
+<!--Decimal(a,b) : 数字类型,b位小数,共a位-->
+<!--Mac : 报文押,需按照指定算法算法将报文加押-->
+<!--根标记-->
+<INSUREQ>
+	<!--请求报文头-->
+	<HEAD>
+		<USER_NAME type="SimpleString" maxLength="50" description="用户名"></USER_NAME>
+		<USER_PSW type="SimpleString" maxLength="50" description="密码"></USER_PSW>
+		<BUSINESS_CODE type="SimpleString" maxLength="2" description="业务类型"></BUSINESS_CODE>
+	</HEAD>
+	<MAIN>
+		<TRANSRNO type="SimpleString" maxLength="4" description="交易码"></TRANSRNO>
+		<SERIALDECIMAL type="SimpleString" maxLength="50" description="交易码"></SERIALDECIMAL>
+		<TRANSRDATE type="SimpleString" maxLength="50" description="交易码"></TRANSRDATE>
+		<CHANNELCODE type="SimpleString" maxLength="50" description="交易码"></CHANNELCODE>
+	</MAIN>
+	<BASE>
+		<VHLMODEL type="List">
+		</VHLMODEL>
+	</BASE>
+</INSUREQ>
