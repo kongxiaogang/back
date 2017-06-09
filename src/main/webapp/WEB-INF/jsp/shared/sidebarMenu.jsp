@@ -10,7 +10,7 @@
         <img src="<%=request.getContextPath()%>/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
       </div>
       <div class="pull-left info">
-        <p>${sessionScope.userAuth.userName}</p>
+        <p>admin</p>
         <!-- Status -->
         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
       </div>
@@ -30,63 +30,46 @@
 
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
-      <li class="header">星河财富</li>
       <!-- Optionally, you can add icons to the links -->
-      <c:forEach items="${sessionScope.userAuth.authorityMenus}" var="menu" varStatus="status">
+      <c:forEach items="${menuList}" var="menu" varStatus="status">
       <%-- <c:forEach items="${authorityMenus}" var="menu" varStatus="status"> --%>
-		<c:choose>
-	    <c:when test="${status.first && empty sessionScope.currentMenu }">
-	    	<li id="${menu.menuId}" class="treeview ">
-	    </c:when>
-		<c:when test="${not empty sessionScope.currentMenu && sessionScope.currentMenu.rootId == menu.menuId }">  
-	    	<li id="${menu.menuId}" class="treeview active">
-	    </c:when>
-	    <c:otherwise>  
-	        <li id="${menu.menuId}" class="treeview ">
-	    </c:otherwise>  
-		</c:choose>	
-      		<a href="#"><i class="fa fa-link"></i> <span>${menu.menuName}</span>
+      	<!-- 一级 -->
+       	<li id="${menu.menuId}" class="treeview " level="level1" >
+      		<a href="javascript:void(0)" <c:if test="${fn:length(menu.pageUrl) gt 0 }"> nav-menu="${menu.menuName },${menu.pageUrl }"</c:if>>
+      			<i class="fa fa-link"></i> 
+      			<span>${menu.menuName}</span>
       			<span class="pull-right-container">
             		<i class="fa fa-angle-left pull-right"></i>
           		</span>
           	</a>
-      	  	<ul class="treeview-menu ">
-      	  		<c:forEach items="${menu.childrens}" var="child">
-      	  			<c:choose>
-          			<c:when test="${not empty sessionScope.currentMenu && sessionScope.currentMenu.secondId eq child.menuId}">  
-          				<li class="active" id="${child.menuId }">
-          			</c:when>
-          			<c:otherwise>  
-		            	<li >
-		        	</c:otherwise>
-		         	</c:choose>
-		         		<a href="${child.pageUrl}"><i class="fa fa-circle-o"></i>${child.menuName}
-		         			<c:if test="${not empty child.childrens }">
-			         			<span class="pull-right-container">
-	                  				<i class="fa fa-angle-left pull-right"></i>
-	                			</span>
-                			</c:if>
-		         		</a>
-		         		<c:if test="${not empty child.childrens }">
-		         		<ul class="treeview-menu">
-				         	<c:forEach items="${child.childrens}" var="grandson">
-				         		<c:choose>
-			          			<c:when test="${not empty sessionScope.currentMenu && sessionScope.currentMenu.thirdId eq grandson.menuId}">  
-			          				<li class="active" id="${grandson.menuId }">
-			          			</c:when>
-			          			<c:otherwise>  
-					            	<li >
-					        	</c:otherwise>
-					         	</c:choose>
-					         		<a href="${grandson.pageUrl}"><i class="fa fa-circle-o"></i>${grandson.menuName}
-					         		</a>
-					         	</li>
-				         	</c:forEach>
-			         	</ul>
-			         	</c:if>
-		         	</li>
-      	  		</c:forEach>
-        	</ul>
+          	<c:if test="${not empty menu.childrens }">
+	      	  	<ul class="treeview-menu ">
+	      	  		<c:forEach items="${menu.childrens}" var="child">
+	      	  			<!-- 二级 -->
+	          			<li class="active" id="${child.menuId }" level="level2" >
+			         		<a href="javascript:void(0)" <c:if test="${fn:length(child.pageUrl) gt 0 }">nav-menu="${menu.menuName },${child.menuName },${child.pageUrl }"</c:if>>
+			         			<i class="fa fa-circle-o"></i>${child.menuName}
+			         			<c:if test="${not empty child.childrens }">
+				         			<span class="pull-right-container">
+		                  				<i class="fa fa-angle-left pull-right"></i>
+		                			</span>
+	                			</c:if>
+			         		</a>
+			         		<c:if test="${not empty child.childrens }">
+				         		<ul class="treeview-menu">
+						         	<c:forEach items="${child.childrens}" var="grandson">
+					          			<li class="active" id="${grandson.menuId }" level="level2" >
+							         		<a href="javascript:void(0)" <c:if test="${fn:length(grandson.pageUrl) gt 0 }">nav-menu="${menu.menuName },${child.menuName },${grandson.menuName },${grandson.pageUrl }"</c:if>>
+							         			<i class="fa fa-circle-o"></i>${grandson.menuName}
+							         		</a>
+							         	</li>
+						         	</c:forEach>
+					         	</ul>
+				         	</c:if>
+			         	</li>
+	      	  		</c:forEach>
+	        	</ul>
+        	</c:if>
       	</li>
       </c:forEach>
     </ul>

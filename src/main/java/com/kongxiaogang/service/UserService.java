@@ -40,6 +40,8 @@ public interface UserService {
 	 * <pre>selectUserAndRoleList(根据用户model查询用户和角色的关联信息)   
 	 */
 	public List<Map<String,Object>> getUserAndRoleList(UserModel user);
+	
+	public List<Map<String, Object>> getUserAndRoleList(Map<String, Object> condition);
 	/**
 	 * <pre>getUserAndRoleAndPerList(根据用户查询用户，角色和对应的权限，菜单信息)   
 	 */

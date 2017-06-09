@@ -107,6 +107,8 @@ public class UserServiceImpl implements UserService {
 		urm.setUserId(user_Id);
 		//插入用户角色表记录
 		userRoleDao.insert(urm);
+		vo.setRunResult(true);
+		vo.setMessage("添加成功！");
 		return vo;
 	}
 
@@ -138,6 +140,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserModel getUserByUserName(String userName) {
 		return userDao.getUserByUserName(userName);
+	}
+
+	@Override
+	public List<Map<String, Object>> getUserAndRoleList(Map<String, Object> condition) {
+		return userDao.selectUserAndRoleListByMap(condition);
 	}
 
 }

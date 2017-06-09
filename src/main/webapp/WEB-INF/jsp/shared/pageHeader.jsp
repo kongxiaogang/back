@@ -100,7 +100,7 @@
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <img src="<%=request.getContextPath()%>/resources/dist/img/user2-16x16.jpg" class="user-image" alt="User Image">
-            <span class="hidden-xs">${sessionScope.userAuth.userName}</span>
+            <span class="hidden-xs">admin</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->

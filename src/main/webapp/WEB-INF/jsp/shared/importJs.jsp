@@ -34,6 +34,8 @@
 <script src="<%=request.getContextPath()%>/resources/plugins/bootstrap-slider/bootstrap-slider.js"></script>
 <!-- treeview -->
 <script src="<%=request.getContextPath()%>/resources/plugins/treeview/js/bootstrap-treeview.js"></script>
+<!-- layer -->
+<script src="<%=request.getContextPath()%>/resources/plugins/layer-v2.3/layer.js"></script>
 <!-- treegrid -->
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/plugins/treegrid/js/jquery.treegrid.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/plugins/treegrid/js/jquery.treegrid.bootstrap3.js"></script>

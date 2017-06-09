@@ -20,7 +20,7 @@
   <div class="login-box-body">
     <p class="login-box-msg">登录</p>
 
-    <form id="loginForm" action="<%=request.getContextPath()%>/user/login.do" method="post">
+    <form id="loginForm" action="<%=request.getContextPath()%>/login.do" method="post">
       <div class="form-group has-feedback">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
         <input type="text" class="form-control" placeholder="请输入用户名" name="userName">
